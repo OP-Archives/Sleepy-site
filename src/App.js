@@ -4,6 +4,7 @@ import Vods from "./vods";
 import VodPlayer from "./vod_player";
 import Navbar from "./navbar";
 import background from "./assets/background.jpg";
+import Merch from "./merch";
 
 export default function App() {
   return (
@@ -21,6 +22,18 @@ export default function App() {
             >
               <Navbar {...props} />
               <Frontpage {...props} />
+            </div>
+          )}
+        />
+        <Route
+          exact
+          path="/merch"
+          render={(props) => (
+            <div
+              className="root"
+            >
+              <Navbar {...props} />
+              <Merch {...props} />
             </div>
           )}
         />

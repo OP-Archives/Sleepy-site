@@ -16,6 +16,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 const mainLinks = [
   { title: `Home`, path: `/` },
   { title: `Vods`, path: `/vods` },
+  { title: `Merch`, path: `/merch` },
 ];
 const socialLinks = [
   { title: `Twitch`, path: `https://twitch.tv/sleepy` },
