@@ -1,11 +1,4 @@
 import React from "react";
-import {
-  makeStyles,
-  Typography,
-  List,
-  Container,
-  ListItem,
-} from "@material-ui/core";
 import SimpleBar from "simplebar-react";
 import merchImage from "./assets/merch/3p6Pv5VM.jpg";
 import merchImage2 from "./assets/merch/8z3S5AVT.jpg";
@@ -15,61 +8,23 @@ import merchImage5 from "./assets/merch/IZiQY3UL.jpg";
 import merchImage6 from "./assets/merch/ljXhIuXs.jpg";
 import merchImage7 from "./assets/merch/P0g2rssm.png";
 import merchImage8 from "./assets/merch/TVRqA2k7.png";
+import { Typography, Box } from "@mui/material";
 
-const merchImages = [
-  merchImage,
-  merchImage2,
-  merchImage3,
-  merchImage4,
-  merchImage5,
-  merchImage6,
-  merchImage7,
-  merchImage8,
-];
+const merchImages = [merchImage, merchImage2, merchImage3, merchImage4, merchImage5, merchImage6, merchImage7, merchImage8];
 
-export default function Merch(props) {
-  const classes = useStyles();
-
+export default function Merch() {
   return (
-    <Container maxWidth={false} disableGutters style={{ height: "100%" }}>
-      <SimpleBar className={classes.scroll}>
-        <Typography className={classes.header} variant="h4">
-          {`Merch (Work in Progress)`}
-        </Typography>
-        <div className={classes.root}>
+    <SimpleBar>
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2, flexWrap: "wrap" }}>
+        <Box>
+          <Typography variant="h4">{`Merch`}</Typography>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2, flexWrap: "wrap" }}>
           {merchImages.map((item, index) => {
-            return <img key={index} src={item} className={classes.image} />;
+            return <img alt="" key={index} src={item} style={{ height: "300px", width: "300px", marginRight: "2rem", marginTop: "2rem" }} />;
           })}
-        </div>
-      </SimpleBar>
-    </Container>
+        </Box>
+      </Box>
+    </SimpleBar>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  root: {
-    marginLeft: "2rem",
-    marginTop: "2rem",
-    display: "flex",
-    flexWrap: "wrap",
-    height: "100%",
-  },
-  center: {
-    textAlign: "center",
-  },
-  header: {
-    marginTop: "3rem",
-    marginLeft: "2rem",
-    color: "#fff",
-  },
-  scroll: {
-    height: "calc(100% - 4rem)",
-    position: "relative",
-  },
-  image: {
-    height: "300px",
-    width: "300px",
-    marginRight: "2rem",
-    marginTop: "2rem",
-  },
-}));
