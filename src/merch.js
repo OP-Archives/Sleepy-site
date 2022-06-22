@@ -14,10 +14,10 @@ const merchImages = [merchImage, merchImage2, merchImage3, merchImage4, merchIma
 
 export default function Merch() {
   return (
-    <SimpleBar>
+    <SimpleBar style={{ minHeight: 0, height: "100%" }}>
       <Box sx={{ display: "flex", justifyContent: "center", mt: 2, flexWrap: "wrap" }}>
         <Box>
-          <Typography variant="h4">{`Merch`}</Typography>
+          <Typography variant="h4" color="primary">{`Merch`}</Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2, flexWrap: "wrap" }}>
           {merchImages.map((item, index) => {

@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./navbar";
-import Merch from "./merch";
 import { createTheme, ThemeProvider, responsiveFontSizes } from "@mui/material/styles";
 import { CssBaseline, styled } from "@mui/material";
 import { yellow } from "@mui/material/colors";
-import Vods from "./vods/vods";
+import Vods from "./vods/Vods";
+import Navbar from "./navbar/navbar";
 import YoutubeVod from "./vods/YoutubeVod";
 import CustomVod from "./vods/CustomVod";
 import NotFound from "./utils/NotFound";
+import Merch from "./merch";
 
 const channel = "Sleepy",
   twitchId = "135052907",
@@ -50,7 +50,7 @@ export default function App() {
             path="*"
             element={
               <Parent>
-                <NotFound />
+                <NotFound channel={channel} />
               </Parent>
             }
           />
@@ -59,18 +59,8 @@ export default function App() {
             path="/"
             element={
               <Parent>
-                <Navbar />
+                <Navbar channel={channel} />
                 <Vods channel={channel} twitchId={twitchId} VODS_API_BASE={VODS_API_BASE} />
-              </Parent>
-            }
-          />
-          <Route
-            exact
-            path="/merch"
-            element={
-              <Parent>
-                <Navbar />
-                <Merch />
               </Parent>
             }
           />
@@ -79,7 +69,7 @@ export default function App() {
             path="/vods"
             element={
               <Parent>
-                <Navbar />
+                <Navbar channel={channel} />
                 <Vods channel={channel} twitchId={twitchId} VODS_API_BASE={VODS_API_BASE} />
               </Parent>
             }
@@ -120,6 +110,16 @@ export default function App() {
               </Parent>
             }
           />
+          <Route
+            exact
+            path="/merch"
+            element={
+              <Parent>
+                <Navbar channel={channel} />
+                <Merch />
+              </Parent>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
@@ -135,5 +135,4 @@ const Parent = styled((props) => <div {...props} />)`
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 0;
 `;
