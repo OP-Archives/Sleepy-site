@@ -242,7 +242,7 @@ export default function Chat(props) {
             key={badgesCount++}
             crossOrigin="anonymous"
             style={{ display: "inline-block", minWidth: "1rem", height: "1rem", margin: "0 .2rem .1rem 0", backgroundPosition: "50%", verticalAlign: "middle" }}
-            src={`${BASE_TWITCH_CDN}/badges/v1/${twitchBadge.versions[badge.version] ? twitchBadge.versions[badge.version].image_url_1x : twitchBadge.versions[0].image_url_1x}`}
+            src={`${twitchBadge.versions[badge.version] ? twitchBadge.versions[badge.version].image_url_1x : twitchBadge.versions[0].image_url_1x}`}
             alt=""
           />
         );
@@ -256,82 +256,97 @@ export default function Chat(props) {
       const textFragments = [];
       for (let i = 0; i < message.length; i++) {
         const fragment = message[i];
-        if (!fragment.emoticon) {
-          let textArray = fragment.text.split(" ");
+        if (fragment.emote) {
+          textFragments.push(
+            <Box key={i + fragment.emote.emoteID} sx={{ display: "inline" }}>
+              <img
+                crossOrigin="anonymous"
+                style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }}
+                src={`${BASE_TWITCH_CDN}/emoticons/v2/${fragment.emote.emoteID}/default/dark/1.0`}
+                alt=""
+              />
+            </Box>
+          );
+          continue;
+        }
 
-          for (let text of textArray) {
-            let found;
-            if (emotes.current) {
-              if (emotes.current.ffz_emotes) {
-                for (let j = 0; j < emotes.current.ffz_emotes.length; j++) {
-                  const emote = emotes.current.ffz_emotes[j];
-                  if (text === emote.code || text === emote.name) {
-                    found = true;
-                    textFragments.push(
-                      <Box key={messageCount++} style={{ display: "inline" }}>
-                        <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_FFZ_EMOTE_CDN}/${emote.id}/1`} alt="" />
-                        {` `}
-                      </Box>
-                    );
-                    break;
-                  }
-                  if (found) continue;
-                }
-              }
+        if (fragment.emoticon) {
+          textFragments.push(
+            <Box key={i + fragment.emoticon.emoticon_id} sx={{ display: "inline" }}>
+              <img
+                crossOrigin="anonymous"
+                style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }}
+                src={`${BASE_TWITCH_CDN}/emoticons/v2/${fragment.emoticon.emoticon_id}/default/dark/1.0`}
+                alt=""
+              />
+            </Box>
+          );
+          continue;
+        }
 
-              if (emotes.current.bttv_emotes) {
-                for (let j = 0; j < emotes.current.bttv_emotes.length; j++) {
-                  const emote = emotes.current.bttv_emotes[j];
-                  if (text === emote.code || text === emote.name) {
-                    found = true;
-                    textFragments.push(
-                      <Box key={messageCount++} style={{ display: "inline" }}>
-                        <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_BTTV_EMOTE_CDN}/${emote.id}/1x`} alt="" />
-                        {` `}
-                      </Box>
-                    );
-                    break;
-                  }
-                }
-                if (found) continue;
-              }
+        let textArray = fragment.text.split(" ");
 
-              if (emotes.current["7tv_emotes"]) {
-                for (let j = 0; j < emotes.current["7tv_emotes"].length; j++) {
-                  const emote = emotes.current["7tv_emotes"][j];
-                  if (text === emote.code || text === emote.name) {
-                    found = true;
-                    textFragments.push(
-                      <Box key={messageCount++} style={{ display: "inline" }}>
-                        <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_7TV_EMOTE_CDN}/${emote.id}/1x`} alt="" />
-                        {` `}
-                      </Box>
-                    );
-                    break;
-                  }
+        for (let text of textArray) {
+          let found;
+          if (emotes.current) {
+            if (emotes.current.ffz_emotes) {
+              for (let j = 0; j < emotes.current.ffz_emotes.length; j++) {
+                const emote = emotes.current.ffz_emotes[j];
+                if (text === emote.code || text === emote.name) {
+                  found = true;
+                  textFragments.push(
+                    <Box key={messageCount++} style={{ display: "inline" }}>
+                      <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_FFZ_EMOTE_CDN}/${emote.id}/1`} alt="" />
+                      {` `}
+                    </Box>
+                  );
+                  break;
                 }
                 if (found) continue;
               }
             }
 
-            textFragments.push(
-              <Twemoji key={messageCount++} noWrapper options={{ className: "twemoji" }}>
-                <Typography variant="body1" display="inline">{`${text} `}</Typography>
-              </Twemoji>
-            );
+            if (emotes.current.bttv_emotes) {
+              for (let j = 0; j < emotes.current.bttv_emotes.length; j++) {
+                const emote = emotes.current.bttv_emotes[j];
+                if (text === emote.code || text === emote.name) {
+                  found = true;
+                  textFragments.push(
+                    <Box key={messageCount++} style={{ display: "inline" }}>
+                      <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_BTTV_EMOTE_CDN}/${emote.id}/1x`} alt="" />
+                      {` `}
+                    </Box>
+                  );
+                  break;
+                }
+              }
+              if (found) continue;
+            }
+
+            if (emotes.current["7tv_emotes"]) {
+              for (let j = 0; j < emotes.current["7tv_emotes"].length; j++) {
+                const emote = emotes.current["7tv_emotes"][j];
+                if (text === emote.code || text === emote.name) {
+                  found = true;
+                  textFragments.push(
+                    <Box key={messageCount++} style={{ display: "inline" }}>
+                      <img crossOrigin="anonymous" style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }} src={`${BASE_7TV_EMOTE_CDN}/${emote.id}/1x`} alt="" />
+                      {` `}
+                    </Box>
+                  );
+                  break;
+                }
+              }
+              if (found) continue;
+            }
           }
-          continue;
+
+          textFragments.push(
+            <Twemoji key={messageCount++} noWrapper options={{ className: "twemoji" }}>
+              <Typography variant="body1" display="inline">{`${text} `}</Typography>
+            </Twemoji>
+          );
         }
-        textFragments.push(
-          <Box key={i + fragment.emoticon.emoticon_id} sx={{ display: "inline" }}>
-            <img
-              crossOrigin="anonymous"
-              style={{ verticalAlign: "middle", border: "none", maxWidth: "100%" }}
-              src={`${BASE_TWITCH_CDN}/emoticons/v2/${fragment.emoticon.emoticon_id}/default/dark/1.0`}
-              alt=""
-            />
-          </Box>
-        );
       }
       return <Box sx={{ display: "inline" }}>{textFragments}</Box>;
     };
